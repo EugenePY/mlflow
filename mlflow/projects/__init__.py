@@ -575,10 +575,13 @@ def _validate_docker_installation():
         docker_path = "docker"
         process.exec_cmd([docker_path, "--help"], throw_on_error=False)
     except EnvironmentError:
-        raise ExecutionException("Could not find Docker executable. "
-                                 "Ensure Docker is installed as per the instructions "
-                                 "at https://docs.docker.com/install/overview/.")
-
+        docker_host = os.environ.get("DOCKER_HOST", None) 
+        if docker_host is None:
+            raise ExecutionException("Could not find Docker executable. "
+                                    "Ensure Docker is installed as per the instructions "
+                                    "at https://docs.docker.com/install/overview/.")
+        else:
+            _logger.info(f"Using DOCKER_HOST={docker_host}.")
 
 def _validate_docker_env(project):
     if not project.name:
