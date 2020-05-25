@@ -571,9 +571,11 @@ def _validate_docker_installation():
     """
     Verify if Docker is installed on host machine.
     """
+    print("DOCKER")
     try:
         docker_path = "docker"
         process.exec_cmd([docker_path, "--help"], throw_on_error=False)
+
     except EnvironmentError:
         docker_host = os.environ.get("DOCKER_HOST", None) 
         if docker_host is None:
